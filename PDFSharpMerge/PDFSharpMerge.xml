@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PDFSharpMerge</name>
+    </assembly>
+    <members>
+        <member name="M:PDFSharpMerge.Classes.MyFontResolver.GetFont(System.String)">
+            <summary>
+            Return the font data for the fonts.
+            </summary>
+        </member>
+        <member name="M:PDFSharpMerge.Classes.MyFontResolver.Apply">
+            <summary>
+            Ensure the font resolver is only applied once (or an exception is thrown)
+            </summary>
+        </member>
+        <member name="T:PDFSharpMerge.Classes.FontHelper">
+            <summary>
+            Helper class that reads font data from embedded resources.
+            </summary>
+        </member>
+        <member name="M:PDFSharpMerge.Classes.FontHelper.LoadFontData(System.String)">
+            <summary>
+            Returns the specified font from an embedded resource.
+            </summary>
+        </member>
+        <member name="M:PDFSharpMerge.Classes.Helper.GetSecureGUID">
+            <summary>
+            Returns a cryptgraphically secure GUID.  More computationally intensive, but can't be guessed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PDFSharpMerge.Classes.Helper.IncrementVersion(System.String)">
+            <summary>
+            Increments the integer component of version strings 
+            </summary>
+            <param name="original"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PDFSharpMerge.Classes.Helper.IsChinese(System.String)">
+            <summary>
+            Detects if a string contains chinese charcaters
+            </summary>
+            <param name="text">The unicode string to be checked</param>
+            <returns></returns>
+        </member>
+        <member name="M:PDFSharpMerge.Classes.Helper.ReadFully(System.IO.Stream,System.Int64)">
+            <summary>
+            Reads data from a stream until the end is reached. The
+            data is returned as a byte array. An IOException is
+            thrown if any of the underlying IO calls fail.
+            </summary>
+            <param name="stream">The stream to read data from</param>
+            <param name="initialLength">The initial buffer length</param>
+        </member>
+        <member name="M:PDFSharpMerge.Classes.StringExtensions.Substring(System.String,System.String,System.String,System.StringComparison)">
+            <summary>
+            takes a substring between two anchor strings (or the end of the string if that anchor is null)
+            </summary>
+            <param name="this">a string</param>
+            <param name="from">an optional string to search after</param>
+            <param name="until">an optional string to search before</param>
+            <param name="comparison">an optional comparison for the search</param>
+            <returns>a substring based on the search</returns>
+        </member>
+        <member name="M:PDFSharpMerge.Controllers.pdfmergeController.FillPDFPost(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="forvaluesjson"></param>
+            <param name="json"></param>
+            <returns>FileStreamResult</returns>
+        </member>
+        <member name="M:PDFSharpMerge.Controllers.pdfmergeController.OverlayImageOnField(PdfSharp.Pdf.PdfDocument,System.String,PdfSharp.Pdf.PdfRectangle,PdfSharp.Pdf.PdfItem)">
+            <summary>
+            Draws an image over a rectange (like those specified in a form field)
+            </summary>
+            <param name="PDFDocument"></param>
+            <param name="b64Image">Should work for PNG, JPG, GIF and BMP</param>
+            <param name="rect"></param>
+            <param name="focusPageReference"></param>
+        </member>
+        <member name="M:PDFSharpMerge.Controllers.pdfmergeController.OverlayImageOnField(PdfSharp.Pdf.PdfDocument,System.Byte[],PdfSharp.Pdf.PdfRectangle,PdfSharp.Pdf.PdfItem)">
+            <summary>
+            Draws an image over a rectange (like those specified in a form field)
+            </summary>
+            <param name="PDFDocument"></param>
+            <param name="sImage">Should work for PNG, JPG, GIF and BMP</param>
+            <param name="rect"></param>
+            <param name="focusPageReference"></param>
+        </member>
+    </members>
+</doc>

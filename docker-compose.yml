@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  pdfsharpmerge:
+    image: ${DOCKER_REGISTRY}pdfsharpmerge
+    build:
+      context: .
+      dockerfile: PDFSharpMerge\Dockerfile

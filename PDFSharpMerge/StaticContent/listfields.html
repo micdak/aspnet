@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<body>
+    <h2>Get Fields in a PDF</h2>
+    <br />
+    Use the form below to get the a properly formatted JSON string for fillng the uploaded file.  Then go to <a href="fillpdf">./fillpdf</a>.
+    <br />
+    <form method="post" enctype="multipart/form-data">
+        <table border="1">
+            <tr>
+                <td align="right">File: <br /></td>
+                <td><input name="UploadFileName" type="file" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input name="action" type="submit" value="Scan for Fields (Using Mulitpart Post)" formaction="listfields"></td>
+            </tr>
+        </table>
+        <p />
+    </form>
+    <form method="post" enctype='application/json'>
+        <table border="1">
+            <tr>
+                <td align="right">json:<br /><button type='button' id='GenerateJSON'>Generate JSON</button> <br />(Will be generated from the Fields above. <br /> Will be slow in browser because textarea performance is poor with large strings <br />Is not a problem for server code)</td>
+                <td><textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" name="json" rows="10" cols="60"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input name="action" type="submit" value="Scan for Fields (Using Full json Post)" formaction="listfields"> </td>
+            </tr>
+        </table>
+        NOTE: For server calls, may also put this JSON string directly into the request body and POST it to /api/pdfmerge/jlistfields with "application/json" encoding.
+        <p />
+    </form>
+
+    <br />
+    <br />
+
+    <script>
+        document.getElementById('GenerateJSON').addEventListener('click', function () {
+            var files = document.getElementsByName('UploadFileName')[0].files;
+            if (files.length > 0) {
+                var reader = new FileReader();
+                reader.readAsDataURL(files[0]);
+                reader.onload = function () {
+                    document.getElementsByName('json')[0].value = '{"Base64PDF": "' + reader.result.substring(reader.result.indexOf(",") + 1) + '"}';
+                };
+                reader.onerror = function (error) {
+                    console.log('Error: ', error);
+                };
+            }
+        });
+
+
+    </script>
+</body>
+</html>

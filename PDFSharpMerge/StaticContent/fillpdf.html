@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<body>
+    <h2>Fill Fields in a PDF</h2>
+    <br />
+    To get a list of fields and corresonding JSON sample please use <a href="listfields">./listfields</a>.
+    <br />
+    Signature Fields expect to be pouplated via a Base64 Encoded PNG image.
+    <br />
+    Post to this URL to call the API.  You can see the structure by hitting view source on this page.
+    <br />
+    <form method="post" enctype="multipart/form-data">
+        <table border="1">
+            <tr>
+                <td align="right">File: <br /></td>
+                <td><input name="UploadFileName" type="file" /></td>
+            </tr>
+            <tr>
+                <td align="right">Name/Value JSON</td>
+                <td><textarea name="forvaluesjson" rows="10" cols="60"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input name="action" type="submit" value="Fill PDF (Using MultiPart Post)" formaction="fillpdf"></td>
+            </tr>
+        </table>
+        <p />
+    </form>
+    <form method="post" enctype='application/json'>
+        <table border="1">
+            <tr>
+                <td align="right">JSON:<br /><button type='button' id='GenerateJSON'>Generate JSON</button> <br />(Will be generated from the Fields above. <br /> Will be slow in browser because textarea performance is poor with large strings <br />Is not a problem for server code)</td>
+                <td><textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" name="json" rows="10" cols="60"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input name="action" type="submit" value="Fill PDF (Using full JSON Post)" formaction="fillpdf"></td>
+            </tr>
+        </table>
+        NOTE: For server calls, may also put this JSON string directly into the request body and POST it to /api/pdfmerge/jfillpdf with "application/json" encoding.
+        <p />
+    </form>
+
+    <br />
+    <br />
+
+    <script>
+        document.getElementById('GenerateJSON').addEventListener('click', function () {
+            var files = document.getElementsByName('UploadFileName')[0].files;
+            if (files.length > 0) {
+                var reader = new FileReader();
+                reader.readAsDataURL(files[0]);
+                reader.onload = function () {
+                    document.getElementsByName('json')[0].value = '{  "FormFields": ' + document.getElementsByName('forvaluesjson')[0].value + ' , "Base64PDF": "' + reader.result.substring(reader.result.indexOf(",") + 1) + '"}';
+                };
+                reader.onerror = function (error) {
+                    console.log('Error: ', error);
+                };
+            }
+        });
+
+
+    </script>
+</body>
+</html>

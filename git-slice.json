@@ -1,0 +1,13 @@
+{
+  "repoUrl": "https://murcul-coherent@github.com/CoherentCapital/PDFServices.git",
+  "folders": [
+    "./"
+  ],
+  "branch": "master",
+  "ignore": [
+    "git-slice.json",
+    "README.md",
+    "CODEOWNERS",
+    ".circleci/config.yml"
+  ]
+}

@@ -1,0 +1,53 @@
+version: 2
+workflows:
+  version: 2
+  push-to-client:
+    jobs:
+      - git-slice-pull:
+          filters:
+            branches:
+              ignore: master
+      - request_push_branch:
+          type: approval
+          filters:
+            branches:
+              ignore: master
+      - git-slice-push:
+          requires:
+            - request_push_branch
+            - git-slice-pull
+          filters:
+            branches:
+              ignore: master
+  daily-update:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - git-slice-pull
+
+
+jobs:
+  git-slice-push:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: cd ~ && npm install https://github.com/murcul/git-slice.git
+      - run: ~/node_modules/.bin/git-slice push --branch $CIRCLE_BRANCH --message "implementation" --author-name $USERNAME --author-email $EMAIL --password "$PASSWORD"
+  git-slice-pull:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: cd ~ && npm install https://github.com/murcul/git-slice.git
+      - run: git config --global user.email "murcul-reviewer@murcul.com"
+      - run: git config --global user.name "Murcul Reviewer"
+      - run: ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD"
+      - run: git reset --hard origin/master && git pull -f origin master && ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD" && git push origin master

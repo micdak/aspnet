@@ -3,6 +3,7 @@ workflows:
   version: 2
   push-to-client:
     jobs:
+      - build
       - git-slice-pull:
           filters:
             branches:
@@ -32,27 +33,6 @@ workflows:
 
 
 jobs:
-  git-slice-push:
-    docker:
-      - image: circleci/node:8.11
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run: cd ~ && npm install https://github.com/murcul/git-slice.git
-      - run: ~/node_modules/.bin/git-slice push --branch $CIRCLE_BRANCH --message "implementation" --author-name $USERNAME --author-email $EMAIL --password "$PASSWORD"
-  git-slice-pull:
-    docker:
-      - image: circleci/node:8.11
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run: cd ~ && npm install https://github.com/murcul/git-slice.git
-      - run: git config --global user.email "murcul-reviewer@murcul.com"
-      - run: git config --global user.name "Murcul Reviewer"
-      - run: ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD"
-      - run: git reset --hard origin/master && git pull -f origin master && ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD" && git push origin master
-
-jobs:
   build:
     docker:
       - image: microsoft/dotnet:2.1-sdk
@@ -74,3 +54,23 @@ jobs:
       - run: 
           name: build docker image
           command : docker build -t pdfsharpmerge .
+
+  git-slice-push:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: cd ~ && npm install https://github.com/murcul/git-slice.git
+      - run: ~/node_modules/.bin/git-slice push --branch $CIRCLE_BRANCH --message "implementation" --author-name $USERNAME --author-email $EMAIL --password "$PASSWORD"
+  git-slice-pull:
+    docker:
+      - image: circleci/node:8.11
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: cd ~ && npm install https://github.com/murcul/git-slice.git
+      - run: git config --global user.email "murcul-reviewer@murcul.com"
+      - run: git config --global user.name "Murcul Reviewer"
+      - run: ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD"
+      - run: git reset --hard origin/master && git pull -f origin master && ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD" && git push origin master

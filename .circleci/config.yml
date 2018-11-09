@@ -52,7 +52,6 @@ jobs:
       - run: ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD"
       - run: git reset --hard origin/master && git pull -f origin master && ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD" && git push origin master
 
-jobs:
   build:
     docker:
       - image: microsoft/dotnet:2.1-sdk

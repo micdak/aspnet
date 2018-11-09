@@ -51,3 +51,26 @@ jobs:
       - run: git config --global user.name "Murcul Reviewer"
       - run: ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD"
       - run: git reset --hard origin/master && git pull -f origin master && ~/node_modules/.bin/git-slice pull --username $USERNAME --password "$PASSWORD" && git push origin master
+
+jobs:
+  build:
+    docker:
+      - image: microsoft/dotnet:2.1-sdk
+    steps:
+      - checkout
+
+      - setup_remote_docker:  
+          docker_layer_caching: true 
+          
+      - run: 
+          name: install docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+
+      - run: 
+          name: build docker image
+          command : docker build -t PDFSharpMerge .

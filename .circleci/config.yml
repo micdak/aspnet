@@ -3,7 +3,6 @@ workflows:
   version: 2
   push-to-client:
     jobs:
-      - build
       - git-slice-pull:
           filters:
             branches:
